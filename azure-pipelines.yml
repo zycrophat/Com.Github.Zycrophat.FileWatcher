@@ -15,11 +15,10 @@ variables:
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
-
+  
 - task: DotNetCoreCLI@2
   inputs:
     command: 'pack'
     packagesToPack: 'Com.Github.Zycrophat.Serilog.Extensions/*.csproj'
     nobuild: true
-    versioningScheme: 'byEnvVar'
-    versionEnvVar: '$(GitVersion_NuGetVersion)'
+    versioningScheme: 'off'
