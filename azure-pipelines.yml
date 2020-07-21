@@ -7,7 +7,7 @@ trigger:
 - master
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-latest'
 
 variables:
   buildConfiguration: 'Release'
@@ -22,4 +22,4 @@ steps:
     packagesToPack: 'Com.Github.Zycrophat.Serilog.Extensions/*.csproj'
     nobuild: true
     versioningScheme: 'byEnvVar'
-    versionEnvVar: '$(GitVersion.NuGetVersion)'
+    versionEnvVar: '$(GitVersion_NuGetVersion)'
