@@ -5,7 +5,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <Authors>Andreas Steffan</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/zycrophat/Com.Github.Zycrophat.FileWatcher</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
     <None Include="LICENSE.txt" Pack="true" PackagePath="$(PackageLicenseFile)"/>
