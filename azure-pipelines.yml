@@ -22,3 +22,16 @@ steps:
     packagesToPack: 'Com.Github.Zycrophat.Serilog.Extensions/*.csproj'
     nobuild: true
     versioningScheme: 'off'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '.'
+    Contents: '*.nupkg'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    FlattenFolders: true
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'Com.Github.Zycrophat.Serilog.Extensions.NuGet'
+    publishLocation: 'Container'
