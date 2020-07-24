@@ -12,6 +12,10 @@
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <UseFullSemVerForNuGet>True</UseFullSemVerForNuGet>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.Network" Version="3.1.1" />
     <PackageReference Include="AspNetCore.HealthChecks.System" Version="3.1.2" />

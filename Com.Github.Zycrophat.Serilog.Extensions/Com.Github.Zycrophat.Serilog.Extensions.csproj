@@ -10,8 +10,12 @@
     <RepositoryUrl>https://github.com/zycrophat/Com.Github.Zycrophat.FileWatcher</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="LICENSE.txt" Pack="true" PackagePath="$(PackageLicenseFile)"/>
+    <None Include="LICENSE.txt" Pack="true" PackagePath="$(PackageLicenseFile)" />
   </ItemGroup>
+  
+  <PropertyGroup>
+    <UseFullSemVerForNuGet>True</UseFullSemVerForNuGet>
+  </PropertyGroup>  
 
   <ItemGroup>
     <PackageReference Include="GitVersionTask" Version="5.3.7">
