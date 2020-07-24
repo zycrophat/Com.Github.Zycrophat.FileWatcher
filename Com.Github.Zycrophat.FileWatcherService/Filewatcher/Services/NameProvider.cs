@@ -1,4 +1,4 @@
-﻿using Serilog;
+﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,11 +10,11 @@ namespace Com.Github.Zycrophat.FileWatcherService.Filewatcher.Services
     public class NameProvider
     {
 
-        private readonly ILogger _logger;
+        private readonly ILogger<NameProvider> logger;
 
-        public NameProvider(ILogger logger)
+        public NameProvider(ILogger<NameProvider> logger)
         {
-            _logger = logger;
+            this.logger = logger;
         }
 
         public async Task<IEnumerable<string>> GetNames()
@@ -23,7 +23,7 @@ namespace Com.Github.Zycrophat.FileWatcherService.Filewatcher.Services
 
             await Task.Delay(1000);
 
-            _logger.Information("Hello, {@names}", names);
+            logger.LogInformation("Hello, {names}", names);
             return names;
         }
     }

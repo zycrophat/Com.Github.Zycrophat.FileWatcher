@@ -19,7 +19,7 @@
     <PackageReference Include="Autofac" Version="5.2.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="AutofacSerilogIntegration" Version="3.0.0" />
-    <PackageReference Include="Com.Github.Zycrophat.Serilog.Extensions" Version="0.1.1" />
+    <PackageReference Include="Com.Github.Zycrophat.Serilog.Extensions" Version="0.2.1" />
     <PackageReference Include="GitVersionTask" Version="5.3.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

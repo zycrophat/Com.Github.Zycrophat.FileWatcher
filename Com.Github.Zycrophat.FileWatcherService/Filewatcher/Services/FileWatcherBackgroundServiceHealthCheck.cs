@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Serilog;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +13,9 @@ namespace Com.Github.Zycrophat.FileWatcherService.Filewatcher.Services
     {
         private readonly FileWatcherBackgroundService fileWatcherBackgroundService;
 
-        private readonly ILogger logger;
+        private readonly ILogger<FileWatcherBackgroundServiceHealthCheck> logger;
 
-        public FileWatcherBackgroundServiceHealthCheck(ILogger logger, FileWatcherBackgroundService fileWatcherBackgroundService)
+        public FileWatcherBackgroundServiceHealthCheck(ILogger<FileWatcherBackgroundServiceHealthCheck> logger, FileWatcherBackgroundService fileWatcherBackgroundService)
         {
             this.fileWatcherBackgroundService = fileWatcherBackgroundService;
             this.logger = logger;
@@ -24,16 +24,9 @@ namespace Com.Github.Zycrophat.FileWatcherService.Filewatcher.Services
         public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default) => 
             await Task.Run(() =>
             {
-                logger.Information("checking health");
+                logger.LogInformation("checking health");
                 bool fileWatcherIsRunning = fileWatcherBackgroundService.IsRunning;
-                if (fileWatcherIsRunning)
-                {
-                    return HealthCheckResult.Healthy();
-                }
-                else
-                {
-                    return HealthCheckResult.Unhealthy();
-                }
+                return fileWatcherIsRunning ? HealthCheckResult.Healthy() : HealthCheckResult.Unhealthy();
             });
     }
 }
