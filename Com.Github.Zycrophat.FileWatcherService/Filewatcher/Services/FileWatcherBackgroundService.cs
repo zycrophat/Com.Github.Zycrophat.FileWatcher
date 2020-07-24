@@ -80,7 +80,7 @@ namespace Com.Github.Zycrophat.FileWatcherService.Filewatcher.Services
         private async void ProcessFileSystemEvent(object source, FileSystemEventArgs e) =>
             await Task.Run(() =>
             {
-                Thread.Sleep(5000);
+                //Thread.Sleep(5000);
                 logger.LogInformation("File: {FullPath} {ChangeType}", e.FullPath, e.ChangeType);
             });
 
