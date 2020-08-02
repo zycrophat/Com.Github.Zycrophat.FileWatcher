@@ -69,16 +69,6 @@ namespace Com.Github.Zycrophat.FileWatcherService
         // Don't build the container; that gets done for you by the factory.
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            Log.Logger = new LoggerConfiguration()
-                .ReadFrom.Configuration(Configuration)
-                //.Enrich.WithShortSourceContext()
-                //.Enrich.WithThreadId()
-                //.MinimumLevel.Debug()
-                //.MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-                //.WriteTo.Console(outputTemplate: "{Timestamp:yyyy-MM-ddTHH:mm:ss.fffffff} [{Level:u}] [{ThreadId}] [{SourceContext}] {Message}{NewLine}{Exception}")
-                .CreateLogger();
-
-            //builder.RegisterLogger();
             builder.RegisterType<FileWatcherBackgroundService>().SingleInstance().As<IHostedService>().AsSelf();
             builder.RegisterType<NameProvider>();
             builder.RegisterType<TimedHostedService>().As<IHostedService>();
