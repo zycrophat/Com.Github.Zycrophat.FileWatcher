@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using Autofac;
-//using AutofacSerilogIntegration;
 using Com.Github.Zycrophat.FileWatcherService.Filewatcher.Services;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
@@ -9,9 +8,7 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
-using Serilog;
 
 namespace Com.Github.Zycrophat.FileWatcherService
 {
@@ -27,7 +24,6 @@ namespace Com.Github.Zycrophat.FileWatcherService
                 Console.WriteLine("Rats are eaten by snakes");
                 await Task.Delay(1000);
             };
-
             //ChangeToken.OnChange(() => configuration.GetReloadToken(), onChange);
         }
 
@@ -61,6 +57,7 @@ namespace Com.Github.Zycrophat.FileWatcherService
                     {
                         setup.AddHost("www.google.com", 443);
                     });
+            services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
         }
 
         // ConfigureContainer is where you can register things directly

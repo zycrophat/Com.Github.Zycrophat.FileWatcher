@@ -1,15 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Serilog;
-using Serilog.Events;
 
 namespace Com.Github.Zycrophat.FileWatcherService
 {
@@ -17,7 +13,6 @@ namespace Com.Github.Zycrophat.FileWatcherService
     {
         public static void Main(string[] args)
         {
-            
 
             // ASP.NET Core 3.0+:
             // The UseServiceProviderFactory call attaches the
@@ -38,12 +33,19 @@ namespace Com.Github.Zycrophat.FileWatcherService
                     config.SetBasePath(env.ContentRootPath)
                     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                     .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+
+                    if (hostingContext.HostingEnvironment.IsDevelopment())
+                    {
+                        config.AddUserSecrets<Program>();
+                    }
                 })
                 .UseSerilog((hostingContext, loggerConfiguration) =>
                     loggerConfiguration
                     .ReadFrom.Configuration(hostingContext.Configuration)
                 )
                 .Build();
+
+            
 
             host.Run();
         }
