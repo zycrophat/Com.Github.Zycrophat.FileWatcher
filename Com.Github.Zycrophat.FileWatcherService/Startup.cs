@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Autofac;
-using AutofacSerilogIntegration;
+//using AutofacSerilogIntegration;
 using Com.Github.Zycrophat.FileWatcherService.Filewatcher.Services;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
@@ -78,11 +78,11 @@ namespace Com.Github.Zycrophat.FileWatcherService
                 //.WriteTo.Console(outputTemplate: "{Timestamp:yyyy-MM-ddTHH:mm:ss.fffffff} [{Level:u}] [{ThreadId}] [{SourceContext}] {Message}{NewLine}{Exception}")
                 .CreateLogger();
 
-            builder.RegisterLogger();
+            //builder.RegisterLogger();
             builder.RegisterType<FileWatcherBackgroundService>().SingleInstance().As<IHostedService>().AsSelf();
             builder.RegisterType<NameProvider>();
             builder.RegisterType<TimedHostedService>().As<IHostedService>();
-            builder.RegisterType<FileWatcherBackgroundServiceHealthCheck>().SingleInstance().As<IHealthCheck>().AsSelf();
+            builder.RegisterType<FileWatcherBackgroundServiceHealthCheck>().SingleInstance().AsSelf();
             // Register your own things directly with Autofac, like:
             // builder.RegisterModule(new MyApplicationModule());
         }

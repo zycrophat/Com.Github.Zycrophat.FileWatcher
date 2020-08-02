@@ -39,7 +39,10 @@ namespace Com.Github.Zycrophat.FileWatcherService
                     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                     .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
                 })
-                .UseSerilog()
+                .UseSerilog((hostingContext, loggerConfiguration) =>
+                    loggerConfiguration
+                    .ReadFrom.Configuration(hostingContext.Configuration)
+                )
                 .Build();
 
             host.Run();
