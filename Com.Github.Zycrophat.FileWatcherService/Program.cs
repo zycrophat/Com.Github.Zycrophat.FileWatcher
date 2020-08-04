@@ -1,7 +1,5 @@
 using System;
-using System.IO;
 using Autofac.Extensions.DependencyInjection;
-using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -19,11 +17,12 @@ namespace Com.Github.Zycrophat.FileWatcherService
             // Autofac provider to the generic hosting mechanism.
             var host = Host.CreateDefaultBuilder(args)
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+                .UseWindowsService()
                 .ConfigureWebHostDefaults(webHostBuilder =>
                 {
                     webHostBuilder
-                    .UseContentRoot(Directory.GetCurrentDirectory())
-                    .UseIISIntegration()
+                    .UseContentRoot(AppContext.BaseDirectory)
+                    
                     .UseStartup<Startup>();
                 })
                 .ConfigureAppConfiguration((hostingContext, config) =>
@@ -44,8 +43,6 @@ namespace Com.Github.Zycrophat.FileWatcherService
                     .ReadFrom.Configuration(hostingContext.Configuration)
                 )
                 .Build();
-
-            
 
             host.Run();
         }

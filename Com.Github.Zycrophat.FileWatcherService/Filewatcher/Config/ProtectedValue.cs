@@ -11,6 +11,10 @@ using System.Buffers.Text;
 using Microsoft.Extensions.FileSystemGlobbing.Internal.Patterns;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.FileSystemGlobbing;
+using System.Runtime.InteropServices;
+using LanguageExt;
+using static LanguageExt.Prelude;
+using LanguageExt.UnsafeValueAccess;
 
 namespace Com.Github.Zycrophat.FileWatcherService.Filewatcher.Config
 {
@@ -18,7 +22,7 @@ namespace Com.Github.Zycrophat.FileWatcherService.Filewatcher.Config
     public class ProtectedValue
     {
 
-        private static readonly Regex pattern = new Regex(@"^DPAPI\((.*)\)$");
+        private static readonly Regex pattern = new Regex(@"^dpapi:(.*)$");
         public string CipherText { get; private set; }
         
         public ProtectedValue(string value)
@@ -26,17 +30,24 @@ namespace Com.Github.Zycrophat.FileWatcherService.Filewatcher.Config
             CipherText = value;
         }
 
-        public string UnprotectedValue 
+        public TryOption<string> TryUnprotect(Option<byte[]> entropy = default, DataProtectionScope scope = DataProtectionScope.CurrentUser) => () =>
         {
-            get {
-                var matches = pattern.Match(CipherText);
-                if (matches.Success)
-                {
-                    return Encoding.UTF8.GetString(ProtectedData.Unprotect(Convert.FromBase64String(matches.Groups[1].Value), null, DataProtectionScope.CurrentUser));
-                }
-                return CipherText;
+            var matches = pattern.Match(CipherText);
+            var isOSPlatformSupported = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+            if (matches.Success && isOSPlatformSupported)
+            {
+                return Some(
+                    Encoding.UTF8.GetString(
+                        ProtectedData.Unprotect(
+                            Convert.FromBase64String(matches.Groups[1].Value),
+                            entropy.IfNoneUnsafe(() => null),
+                            scope
+                        )
+                    )
+               );
             }
-        }
+            return None;
+        };
 
     }
 }

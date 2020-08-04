@@ -10,9 +10,7 @@ namespace Com.Github.Zycrophat.FileWatcherService.Filewatcher.Filesystemwatcher
         public TimeSpan DirectoryMonitorInterval = TimeSpan.FromMinutes(5);
         public TimeSpan DirectoryRetryInterval = TimeSpan.FromSeconds(5);
 
-        private Timer _monitorTimer = null;
-
-        private bool _isRecovering = false;
+        private Timer monitorTimer = null;
 
         public RecoveringFileSystemWatcher() : base()
         { }
@@ -64,16 +62,16 @@ namespace Com.Github.Zycrophat.FileWatcherService.Filewatcher.Filesystemwatcher
         {
             try
             {
-                _monitorTimer = new Timer(_monitorTimer_Elapsed);
+                monitorTimer = new Timer(_monitorTimer_Elapsed);
 
                 Disposed += (_, __) =>
                 {
-                    _monitorTimer.Dispose();
+                    monitorTimer.Dispose();
                 };
 
                 ReStartIfNeccessary(TimeSpan.Zero);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -106,10 +104,9 @@ namespace Com.Github.Zycrophat.FileWatcherService.Filewatcher.Filesystemwatcher
                 }
 
                 EnableRaisingEvents = false;
-                _isRecovering = true;
                 ReStartIfNeccessary(DirectoryRetryInterval);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -119,7 +116,7 @@ namespace Com.Github.Zycrophat.FileWatcherService.Filewatcher.Filesystemwatcher
         {
             try
             {
-                _monitorTimer.Change(delay, Timeout.InfiniteTimeSpan);
+                monitorTimer.Change(delay, Timeout.InfiniteTimeSpan);
             }
             catch (ObjectDisposedException)
             { }

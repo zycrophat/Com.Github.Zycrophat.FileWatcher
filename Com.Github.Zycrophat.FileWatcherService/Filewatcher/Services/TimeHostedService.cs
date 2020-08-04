@@ -1,11 +1,8 @@
 ﻿using Com.Github.Zycrophat.FileWatcherService.Filewatcher.Config;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,7 +22,7 @@ namespace Com.Github.Zycrophat.FileWatcherService.Filewatcher.Services
             var fooOption = configuration.GetSection("bla:foo").Get<ProtectedValue>();
             //configuration.GetSection("bla:foo").Bind(fooOption);
 
-            foo = fooOption.UnprotectedValue;
+            foo = fooOption.TryUnprotect().IfNoneOrFail(fooOption.CipherText);
         }
 
         public Task StartAsync(CancellationToken stoppingToken)

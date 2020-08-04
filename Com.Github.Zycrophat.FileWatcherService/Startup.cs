@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 using Autofac;
 using Com.Github.Zycrophat.FileWatcherService.Filewatcher.Services;
 using HealthChecks.UI.Client;
+using Microsoft.ApplicationInsights.Extensibility.Implementation.Tracing;
+using Microsoft.ApplicationInsights.WindowsServer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
@@ -18,13 +21,6 @@ namespace Com.Github.Zycrophat.FileWatcherService
         public Startup(IWebHostEnvironment env, IConfiguration configuration)
         {
             Configuration = configuration;
-
-            Action onChange = async () =>
-            {
-                Console.WriteLine("Rats are eaten by snakes");
-                await Task.Delay(1000);
-            };
-            //ChangeToken.OnChange(() => configuration.GetReloadToken(), onChange);
         }
 
         public IConfiguration Configuration { get; private set; }
@@ -40,7 +36,7 @@ namespace Com.Github.Zycrophat.FileWatcherService
             // won't get called.
             services.AddOptions();
             services.AddMvc().AddControllersAsServices();
-               
+
             services
                 .AddHealthChecks()
                     .AddDiskStorageHealthCheck(setup =>
@@ -56,7 +52,13 @@ namespace Com.Github.Zycrophat.FileWatcherService
                     .AddTcpHealthCheck(setup =>
                     {
                         setup.AddHost("www.google.com", 443);
-                    });
+                    })
+                    .AddApplicationInsightsPublisher();
+
+            services.ConfigureTelemetryModule<DiagnosticsTelemetryModule>((module, o) =>
+            {
+                module.HeartbeatInterval = TimeSpan.FromSeconds(10);
+            });
             services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
         }
 
@@ -82,9 +84,6 @@ namespace Com.Github.Zycrophat.FileWatcherService
             // If, for some reason, you need a reference to the built container, you
             // can use the convenience extension method GetAutofacRoot.
             //AutofacContainer = app.ApplicationServices.GetAutofacRoot();
-            //loggerFactory.AddConsole(this.Configuration.GetSection("Logging"));
-            //loggerFactory.AddDebug();
-            //_ = app.UseMvc();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -93,28 +92,24 @@ namespace Com.Github.Zycrophat.FileWatcherService
             else
             {
                 app.UseExceptionHandler("/Error");
-
             }
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
 
-            app.UseRouting();
-            app.UseEndpoints(endpoints =>
-            {
-                // Mapping of endpoints goes here:
-                //endpoints.MapControllers();
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}"
-                );
-                //endpoints.MapHub<MyChatHub>()
-                //endpoints.MapGrpcService<MyCalculatorService>()
-            });
-            app.UseHealthChecks("/hc", new HealthCheckOptions()
-             {
-                 Predicate = _ => true,
-                 ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-             });
+            app
+                .UseHttpsRedirection()
+                .UseStaticFiles()
+                .UseRouting()
+                .UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllerRoute(
+                        name: "default",
+                        pattern: "{controller=Home}/{action=Index}/{id?}"
+                    );
+                })
+                .UseHealthChecks("/hc", new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
         }
 
     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -6,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Com.Github.Zycrophat.FileWatcherService.Filewatcher.Config
 {
-    public class ProtectedValueTypeConverter : System.ComponentModel.TypeConverter
+    public class ProtectedValueTypeConverter : TypeConverter
     {
-
         /// <summary>
         /// Allow only string conversions
         /// </summary>
