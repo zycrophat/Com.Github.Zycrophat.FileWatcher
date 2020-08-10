@@ -32,7 +32,9 @@ steps:
 - task: PowerShell@2
   inputs:
     targetType: 'inline'
-    script: 'New-Item $env:ChocolateyInstall\templates -ItemType Directory -Force'
+    script: |
+      'New-Item $env:ChocolateyInstall\templates -ItemType Directory -Force'
+      'Write-Host "blablabla" > $env:ChocolateyInstall\templates\mytemplate'
     pwsh: true
 
 - script: dotnet build --configuration $(buildConfiguration)
