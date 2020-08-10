@@ -22,7 +22,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      gitVersion=$(LC_ALL=C git rev-parse HEAD | grep -oP '[[:alnum:]]+')
+      gitVersion=$(LC_ALL=C git rev-parse HEAD | LC_ALL=C grep -oP '[[:alnum:]]+')
       echo sha: $gitVersion
 
 - task: PowerShell@2
