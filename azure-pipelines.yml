@@ -22,8 +22,8 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      'gitVersion=`git rev-parse HEAD | grep -oP ''[[:alnum:]]+''`'
-      'echo sha: $gitVersion'
+      "gitVersion=$(git rev-parse HEAD | grep -oP '[[:alnum:]]+')"
+      "echo sha: $gitVersion"
 
 - task: PowerShell@2
   inputs:
