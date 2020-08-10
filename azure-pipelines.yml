@@ -18,6 +18,17 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: 'echo "sha: `git rev-parse HEAD | grep -oP ''[[:alnum:]]+''`"'
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: 'echo $env:ChocolateyInstall'
+    pwsh: true
+
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
   
@@ -40,3 +51,4 @@ steps:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'Com.Github.Zycrophat.Serilog.Extensions'
     publishLocation: 'Container'
+
