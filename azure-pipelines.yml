@@ -21,7 +21,7 @@ steps:
 - task: PowerShell@2
   inputs:
     targetType: 'inline'
-    script: '"v1.2.3" | Select-String  -Pattern "(?<=v)\d.\d.\d" | % { $_.Matches } | % { $_.Value } | % { "gitVersion:$_" } | echo'
+    script: 'git describe | Select-String  -Pattern ''(?<=^v)\d.\d.\d(-[A-Za-z0-9]+(\.[A-Za-z0-9]+)*)?$'' | % { $_.Matches } | % { $_.Value } | % { "gitVersion:$_" } | echo'
     pwsh: true
 
 - task: Bash@3
