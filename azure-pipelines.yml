@@ -29,15 +29,18 @@ variables:
 
 steps:
 - task: Npm@1
-  enabled: false
+  enabled: true
   inputs:
     command: 'custom'
     customCommand: 'install -g azurite'
 
 - task: Bash@3
+  enabled: true
   inputs:
     targetType: 'inline'
-    script: 'docker run -d -p 10000:10000 -p 10001:10001 mcr.microsoft.com/azure-storage/azurite'
+    script: |
+      mkdir azurite
+      azurite --silent --location azurite --debug azurite\debug.log &
     noProfile: false
     noRc: false
 
