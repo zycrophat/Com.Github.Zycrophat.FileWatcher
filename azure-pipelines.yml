@@ -37,7 +37,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      azurite&
+      azurite &
     noProfile: false
     noRc: false
 
