@@ -33,14 +33,13 @@ steps:
     command: 'custom'
     customCommand: 'install -g azurite'
 
-- task: Bash@3
+- task: PowerShell@2
   inputs:
     targetType: 'inline'
     script: |
-      mkdir azurite
-      azurite --silent --location azurite --debug azurite\debug.log &
-    noProfile: false
-    noRc: false
+      md azurite
+      Start-Process 'azurite --silent --location azurite --debug azurite\debug.log' -NoNewWindow -WindowStyle Minimized
+    pwsh: true
 
 - task: PowerShell@2
   inputs:
