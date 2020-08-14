@@ -29,11 +29,20 @@ variables:
 
 steps:
 - task: Npm@1
+  enabled: false
   inputs:
     command: 'custom'
     customCommand: 'install -g azurite'
 
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: 'docker run -d -p 10000:10000 -p 10001:10001 mcr.microsoft.com/azure-storage/azurite'
+    noProfile: false
+    noRc: false
+
 - task: PowerShell@2
+  enabled: false
   inputs:
     targetType: 'inline'
     script: |
@@ -48,6 +57,7 @@ steps:
     pwsh: true
 
 - task: PowerShell@2
+  enabled: false 
   inputs:
     targetType: 'inline'
     script: |
@@ -63,6 +73,7 @@ steps:
     pwsh: true
 
 - task: PowerShell@2
+  enabled: false
   inputs:
     targetType: 'inline'
     script: |
@@ -70,6 +81,7 @@ steps:
     pwsh: true
 
 - task: Bash@3
+  enabled: false
   inputs:
     targetType: 'inline'
     script: 'echo ''The value is $BLABLA'' | BLABLA=1337 envsubst | cat'
@@ -77,12 +89,14 @@ steps:
     noRc: false
 
 - task: PowerShell@2
+  enabled: false
   inputs:
     targetType: 'inline'
     script: 'echo $env:ChocolateyInstall'
     pwsh: true
   
 - task: PowerShell@2
+  enabled: false
   inputs:
     targetType: 'inline'
     script: |
@@ -94,6 +108,7 @@ steps:
   displayName: 'dotnet build $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
+  enabled: false
   inputs:
     command: 'pack'
     packagesToPack: 'Com.Github.Zycrophat.Serilog.Extensions/*.csproj'
@@ -101,6 +116,7 @@ steps:
     versioningScheme: 'off'
 
 - task: CopyFiles@2
+  enabled: false
   inputs:
     SourceFolder: '.'
     Contents: '*.nupkg'
@@ -108,6 +124,7 @@ steps:
     FlattenFolders: true
 
 - task: PublishBuildArtifacts@1
+  enabled: false
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'Com.Github.Zycrophat.Serilog.Extensions'
