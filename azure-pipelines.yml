@@ -38,7 +38,7 @@ steps:
     targetType: 'inline'
     script: |
       md azurite
-      Start-Process 'azurite --silent --location azurite --debug azurite\debug.log' -NoNewWindow
+      Start-Process 'azurite' -NoNewWindow -ArgumentList '--silent --location azurite --debug azurite\debug.log'
     pwsh: true
 
 - task: PowerShell@2
