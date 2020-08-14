@@ -29,13 +29,13 @@ variables:
 
 steps:
 - task: Npm@1
-  enabled: true
+  enabled: false
   inputs:
     command: 'custom'
     customCommand: 'install -g azurite'
 
 - task: Bash@3
-  enabled: true
+  enabled: false
   inputs:
     targetType: 'inline'
     script: |
