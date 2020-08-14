@@ -37,7 +37,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      azurite &
+      azurite --silent --location azurite --debug azurite\debug.log &
     noProfile: false
     noRc: false
 
