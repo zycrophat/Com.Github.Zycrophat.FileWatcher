@@ -21,8 +21,8 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
-services:
-  nginx: azurite
+#services:
+#  azurite: azurite
 
 variables:
   buildConfiguration: 'Release'
