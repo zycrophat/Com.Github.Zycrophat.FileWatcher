@@ -5,6 +5,7 @@
 resources:
   containers:
   - container: azurite
+    endpoint: serviceconn1
     image: zycroscontainerregistry.azurecr.io/azuritewin
     ports:
     - 10000:10000
