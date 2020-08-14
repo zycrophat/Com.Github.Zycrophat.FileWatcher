@@ -2,13 +2,13 @@
 # Build and test ASP.NET Core projects targeting .NET Core.
 # Add steps that run tests, create a NuGet package, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
-resources:
-  containers:
-  - container: azurite
-    image: mcr.microsoft.com/azure-storage/azurite
-    ports:
-    - 10000:10000
-    - 10001:10001
+#resources:
+#  containers:
+#  - container: azurite
+#    image: mcr.microsoft.com/azure-storage/azurite
+#    ports:
+#    - 10000:10000
+#    - 10001:10001
 
 trigger:
   branches:
@@ -28,6 +28,19 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+- task: Npm@1
+  inputs:
+    command: 'custom'
+    customCommand: 'install -g azurite'
+
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      azurite&
+    noProfile: false
+    noRc: false
+
 - task: PowerShell@2
   inputs:
     targetType: 'inline'
