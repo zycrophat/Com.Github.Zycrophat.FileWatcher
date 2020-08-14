@@ -41,12 +41,11 @@ steps:
     noProfile: false
     noRc: false
 
-- task: Bash@3
+- task: PowerShell@2
   inputs:
     targetType: 'inline'
-    script: 'nc -z localhost 10000 && echo "azurite is running"'
-    noProfile: false
-    noRc: false
+    script: 'Test-NetConnection localhost -Port 10000'
+    pwsh: true
 
 - task: PowerShell@2
   inputs:
