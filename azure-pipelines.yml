@@ -41,7 +41,8 @@ steps:
     targetType: 'inline'
     script: |
       mkdir azurite
-      azurite --silent --location azurite --debug azurite\debug.log &
+      azurite --silent --location azurite --debug azurite\debug.log &> azurite\azuriteout &
+      tail -f azurite\azuriteout | awk '/listening at http:\/\/127.0.0.1:10001/{print "azurite started successfully";exit}'
     noProfile: false
     noRc: false
 
@@ -110,6 +111,7 @@ steps:
 
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
+  enabled: false
 
 - task: DotNetCoreCLI@2
   enabled: false
