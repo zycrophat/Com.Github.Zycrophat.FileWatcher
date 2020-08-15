@@ -41,7 +41,7 @@ steps:
     targetType: 'inline'
     script: |
       mkdir azurite
-      azurite --silent --location azurite --debug azurite\debug.log &> azurite\azuriteout &
+      nohup azurite --silent --location azurite --debug azurite\debug.log &> azurite\azuriteout &
       tail -f azurite\azuriteout | awk '/listening at http:\/\/127.0.0.1:10001/{print "azurite started successfully";exit}'
       echo blabla
     noProfile: false
