@@ -42,7 +42,7 @@ steps:
     script: |
       mkdir azurite
       nohup azurite --silent --location azurite --debug azurite\debug.log &> azurite\azuriteout &
-      tail -f azurite\azuriteout | awk '/listening at http:\/\/127.0.0.1:10001/{print "azurite started successfully";exit}'
+      awk '/listening at http:\/\/127.0.0.1:10001/{print "azurite started successfully"; exit;}'  <(tail -f azurite\azuriteout)
       echo blabla
     noProfile: false
     noRc: false
